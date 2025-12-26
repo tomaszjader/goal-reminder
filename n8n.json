@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        16
+      ],
+      "id": "24e21fea-54ff-4c3f-a77b-d1cc83d7ce8c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "r5iHFZ9vD734mOPl",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "/projects/bObCSV5kAX5lUQ0D/datatables/r5iHFZ9vD734mOPl"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        128,
+        16
+      ],
+      "id": "04f641fd-6c25-488d-a9d7-bb155d979314",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1HUJHd_xO1lZjQ4R4zea8-CZYUZcIlMje4ZWnVtCCtJc"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        16
+      ],
+      "id": "6e090b53-0c05-4392-ac7b-9820ebc3f28c",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "P0v7UOLHoeBzsugQ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.id_chat }}",
+        "text": "=Cele:  \n{{ $('Get a document').item.json.content }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        16
+      ],
+      "id": "4e9d039a-2bc8-4c66-988a-6919d1f8ad6f",
+      "name": "Send a text message1",
+      "webhookId": "53b4c329-2e3a-430e-a8bd-7fb18eef5e4f",
+      "credentials": {
+        "telegramApi": {
+          "id": "gFqrqvMMuykchDgs",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fc1ba0345969f7228871df9e64b3b47e4f43ee33b19ce42717b44162e39dba6e"
+  }
+}
